@@ -1,0 +1,98 @@
+
+/*
+ * This file is part of the Osynapsy package.
+ *
+ * (c) Pietro Celeste <p.celeste@osynapsy.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+span.osy-treebox-label, span.osy-treebox-node-label {
+    font-weight: normal;
+    font-size: 0.9em;
+    margin-bottom: 0px;
+}
+span.osy-treebox-label:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+div.osy-treebox span.tree {
+    display: inline-block;
+    /*margin-right: 3px;*/
+    background-repeat: no-repeat;
+    line-height: 20px;
+    width: 16px;
+    padding: 0px;
+}
+
+div.osy-treebox span.tree-plus-1 {
+    background-image: url(tree.set.png);
+    background-position: 0 6px;
+}
+
+div.osy-treebox span.tree-plus-2 {
+    background-image: url(tree.set.png);
+    background-position: 0 -23px;
+}
+
+div.osy-treebox span.tree-plus-3 {
+    background-image: url(tree.set.png);
+    background-position: 0 -48px;
+}
+
+div.osy-treebox span.tree-null {
+    background-repeat: no-repeat;
+    width: 16px;
+    display: inline-block;
+    margin-right: 3px;
+}
+
+div.osy-treebox span.minus {
+    background-position-x: -20px;
+}
+
+div.osy-treebox span.tree-con-1 {
+    background-image: url(tree.set.png);
+    background-position: 0 -73px;
+}
+
+div.osy-treebox span.tree-con-2 {
+    background-image: url(tree.set.png);
+    background-position: 0 -73px;
+}
+
+div.osy-treebox span.tree-con-3 {
+    background-image: url(tree.set.png);
+    background-position: 0 -98px;
+}
+
+div.osy-treebox span.tree-con-4 {
+    background-image: url(tree.set.png);
+    background-position: 0 -124px;
+}
+div.osy-treebox-node-head:hover,
+div.osy-treebox-leaf:hover {
+    background-color: #eee;
+}
+span.osy-treebox-label-selected {
+    color: #0078A8;
+    font-weight: bold;
+}
+span.osy-treebox-node-command {
+    float: right;
+    font-size: 0.8em;
+    padding: 3px 3px 0px 3px;
+    text-decoration: none !important;
+    visibility: hidden;
+}
+div.osy-treebox-node-head:hover span.osy-treebox-node-command,
+div.osy-treebox-leaf:hover span.osy-treebox-node-command {
+    visibility: visible;
+}
+
+div.osy-treebox-node-label,
+div.osy-treebox-node-head,
+.osy-treebox-leaf {
+    height: 20px;
+}

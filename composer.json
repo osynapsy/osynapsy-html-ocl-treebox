@@ -1,0 +1,26 @@
+{
+    "name": "osynapsy/osynapsy-html-ocl-treebox",
+    "version": "1.0",
+    "homepage": "http://www.osynapsy.net/html-ocl-treebox",
+    "type": "library",
+    "description": "Osynapsy treebox component implementation",
+    "keywords": ["Osynapsy", "Treebox component"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pietro Celeste",
+            "email": "p.celeste@osynapsy.net",
+            "homepage": "https://github.com/osynapsy/osynapsy-html-ocl-treebox/wiki"
+        }
+    ],
+    "require": {
+        "php" : ">=7.2.0",
+        "osynapsy/osynapsy-datastructure" : "@stable",
+        "osynapsy/osynapsy-html" : "@stable"
+    },
+    "autoload" : {
+        "psr-4": {
+            "Osynapsy\\Ocl\\TreeBox\\": "src/"
+        }
+    }
+}
