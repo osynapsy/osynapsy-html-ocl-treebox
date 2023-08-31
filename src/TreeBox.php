@@ -12,16 +12,17 @@
 namespace Osynapsy\Ocl\TreeBox;
 
 use Osynapsy\Html\Tag;
-use Osynapsy\Html\Component;
-use Osynapsy\Ocl\HiddenBox;
-use Osynapsy\DataStructure\Tree;
+use Osynapsy\Html\Component\AbstractComponent;
+use Osynapsy\Html\Component\InputHidden;
+use Osynapsy\DataStructure\Tree as TreeDataStructure;
+
 
 /**
  * Description of TreeBox
  *
  * @author Pietro Celeste <p.celeste@osynapsy.net>
  */
-class TreeBox extends Component
+class TreeBox extends AbstractComponent
 {
     private $nodeOpenIds = [];
     private $refreshOnClick = [];
@@ -36,30 +37,33 @@ class TreeBox extends Component
     public function __construct($id)
     {
         parent::__construct('div', $id);
-        $this->add(new HiddenBox("{$id}_sel"))->setClass('selectedNode');
-        $this->add(new HiddenBox("{$id}_opn"))->setClass('openNodes');
-        $this->setClass('osy-treebox');
+        $this->add(new InputHidden("{$id}_sel"))->addClass('selectedNode');
+        $this->add(new InputHidden("{$id}_opn"))->addClass('openNodes');
+        $this->addClass('osy-treebox');
         $this->requireJs('ocl-treebox.js');
         $this->requireCss('ocl-treebox.css');
     }
 
-    protected function __build_extra__(): void
+    public function preBuild(): void
     {
+        if (empty($this->dataTree)) {
+            return;
+        }
         foreach ($this->dataTree->get() as $node) {
             $this->add($this->nodeFactory($node));
         }
         if (!empty($this->refreshOnClick)) {
-            $this->att('data-refresh-on-click', implode(',', $this->refreshOnClick));
+            $this->attribute('data-refresh-on-click', implode(',', $this->refreshOnClick));
         }
         if (!empty($this->refreshOnOpen)) {
-            $this->att('data-refresh-on-open', implode(',', $this->refreshOnOpen));
+            $this->attribute('data-refresh-on-open', implode(',', $this->refreshOnOpen));
         }
     }
 
     protected function nodeFactory($item, $icons = []) : Tag
     {
         if ($item['_level'] > -1){
-            $icons[$item['_level']] = $item['_position'] === Tree::POSITION_END ? self::ICON_NODE_CONNECTOR_EMPTY: self::ICON_NODE_CONNECTOR_LINE;
+            $icons[$item['_level']] = $item['_position'] === TreeDataStructure::POSITION_END ? self::ICON_NODE_CONNECTOR_EMPTY: self::ICON_NODE_CONNECTOR_LINE;
         }
         return empty($item['_childrens']) ? $this->leafFactory($item, $icons) : $this->branchFactory($item, $icons);
     }
@@ -69,7 +73,7 @@ class TreeBox extends Component
        $leaf = new Tag('div', null, 'osy-treebox-leaf');
        if (!empty($this->refreshOnClick)) {
            $leaf->addClass('osy-treebox-node');
-           $leaf->att(['data-level' => $item['_level'], 'data-node-id' => $item[0]]);
+           $leaf->attributes(['data-level' => $item['_level'], 'data-node-id' => $item[0]]);
        }
        $leaf->add($this->iconFactory($item, $icons));
        $leaf->add(new Tag('span', null, 'osy-treebox-node-label'))->add(new Tag('span', null, 'osy-treebox-label'))->add($item[1]);
@@ -84,7 +88,7 @@ class TreeBox extends Component
         $branch = new Tag('div', null, 'osy-treebox-branch');
         if (!empty($this->refreshOnClick)) {
             $branch->addClass('osy-treebox-node');
-            $branch->att(['data-level' => $item['_level'], 'data-node-id' => $item[0]]);
+            $branch->attributes(['data-level' => $item['_level'], 'data-node-id' => $item[0]]);
         }
         $branch->add($this->branchHeadFactory($item, $icons));
         $branch->add($this->branchBodyFactory($item, $icons));
@@ -108,7 +112,7 @@ class TreeBox extends Component
 
     protected function branchBodyFactory($item, $icons)
     {
-        $branchBody = new Tag('div', null, 'osy-treebox-branch-body');
+        $branchBody = new Tag('div', null, 'osy-treebox-branch-body');        
         if (!in_array($item[0], $this->nodeOpenIds) && ($item[3] != '1')) {
             $branchBody->addClass('d-none');
         }
@@ -120,7 +124,7 @@ class TreeBox extends Component
 
     private function iconFactory($node, $icons = [])
     {
-        $class = "osy-treebox-branch-command tree-plus-".(!empty($node['_level']) && $node['_position'] === Tree::POSITION_BEGIN ? Tree::POSITION_BETWEEN : $node['_position']);
+        $class = "osy-treebox-branch-command tree-plus-".(!empty($node['_level']) && $node['_position'] === TreeDataStructure::POSITION_BEGIN ? TreeDataStructure::POSITION_BETWEEN : $node['_position']);
         if (empty($node['_childrens'])){
             $class = "tree-con-{$node['_position']}";
         } elseif (in_array($node[0], $this->nodeOpenIds) || !empty($node[3])) { //If node is open load minus icon
@@ -163,13 +167,13 @@ class TreeBox extends Component
         return $this;
     }
 
-    public function setData($data, $keyId = 0, $keyParentId = 2, $keyIsOpen = 3)
+    public function setDataset($data, $keyId = 0, $keyParentId = 2, $keyIsOpen = 3)
     {
-        parent::setData($data);
-        if (empty($this->data)){
+        parent::setDataset($data);
+        if (empty($this->getDataset())){
             return $this;
         }
-        $this->dataTree = new Tree($keyId, $keyParentId, $keyIsOpen, $this->getData());
+        $this->dataTree = new TreeDataStructure($keyId, $keyParentId, $keyIsOpen, $this->getDataset());
         return $this;
     }
 }
