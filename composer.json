@@ -16,7 +16,7 @@
     "require": {
         "php" : ">=7.2.0",
         "osynapsy/osynapsy-datastructure" : "@stable",
-        "osynapsy/osynapsy-html" : "@stable"
+        "osynapsy/osynapsy-html2" : "@stable"
     },
     "autoload" : {
         "psr-4": {
